@@ -1,22 +1,15 @@
-'''
-This code is due to Yutong Deng (@yutongD), Yingtong Dou (@YingtongDou) and UIC BDSC Lab
-DGFraud (A Deep Graph-based Toolbox for Fraud Detection)
-https://github.com/safe-graph/DGFraud
-'''
+
 import tensorflow as tf
 import argparse
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), '../..')))
-from algorithms.SemiGNN.SemiGNN import SemiGNN
+from GNN import model
 import time
 from utils.data_loader import *
 from utils.utils import *
 
 
-# os.environ['CUDA_VISIBLE_DEVICES'] = '0,1'
-
-# init the common args, expect the model specific args
 def arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=123, help='Random seed.')

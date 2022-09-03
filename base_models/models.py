@@ -10,8 +10,6 @@ FLAGS = flags.FLAGS
 
 
 class Model(object):
-    '''Adapted from tkipf/gcn.'''
-
     def __init__(self, **kwargs):
         allowed_kwargs = {'name', 'logging'}
         for kwarg in kwargs.keys():
@@ -38,7 +36,6 @@ class Model(object):
         raise NotImplementedError
 
     def build(self):
-        """ Wrapper for _build() """
         with tf.variable_scope(self.name):
             self._build()
 

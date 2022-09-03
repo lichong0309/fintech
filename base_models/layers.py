@@ -1,8 +1,4 @@
-'''
-This code is due to Yutong Deng (@yutongD), Yingtong Dou (@YingtongDou) and UIC BDSC Lab
-DGFraud (A Deep Graph-based Toolbox for Fraud Detection)
-https://github.com/safe-graph/DGFraud
-'''
+
 from base_models.inits import *
 import tensorflow as tf
 
@@ -11,8 +7,6 @@ FLAGS = flags.FLAGS
 
 # global unique layer ID dictionary for layer name assignment
 _LAYER_UIDS = {}
-
-'''Code about GCN is adapted from tkipf/gcn.'''
 
 
 def get_layer_uid(layer_name=''):
@@ -258,10 +252,6 @@ class AttentionLayer(Layer):
 
 
 class ConcatenationAggregator(Layer):
-    """This layer equals to the equation (3) in
-    paper 'Spam Review Detection with Graph Convolutional Networks.'
-    """
-
     def __init__(self, input_dim, output_dim, review_item_adj, review_user_adj,
                  review_vecs, user_vecs, item_vecs, dropout=0., act=tf.nn.relu,
                  name=None, concat=False, **kwargs):
@@ -314,10 +304,6 @@ class ConcatenationAggregator(Layer):
 
 
 class AttentionAggregator(Layer):
-    """This layer equals to equation (5) and equation (8) in
-    paper 'Spam Review Detection with Graph Convolutional Networks.'
-    """
-
     def __init__(self, input_dim1, input_dim2, output_dim, hid_dim, user_review_adj, user_item_adj, item_review_adj,
                  item_user_adj,
                  review_vecs, user_vecs, item_vecs, dropout=0., bias=False, act=tf.nn.relu,
@@ -427,9 +413,6 @@ class AttentionAggregator(Layer):
 
 
 class GASConcatenation(Layer):
-    """GCN-based Anti-Spam(GAS) layer for concatenation of comment embedding learned by GCN from the Comment Graph
-     and other embeddings learned in previous operations.
-     """
 
     def __init__(self, review_item_adj, review_user_adj,
                  review_vecs, item_vecs, user_vecs, homo_vecs, name=None, **kwargs):
@@ -465,9 +448,6 @@ class GASConcatenation(Layer):
 
 
 class GEMLayer(Layer):
-    """This layer equals to the equation (8) in
-    paper 'Heterogeneous Graph Neural Networks for Malicious Account Detection.'
-    """
 
     def __init__(self, placeholders, nodes, device_num, embedding, encoding, name=None, **kwargs):
         super(GEMLayer, self).__init__(**kwargs)
@@ -506,8 +486,6 @@ class GEMLayer(Layer):
 
 
 class GAT(Layer):
-    """This layer is adapted from PetarV-/GAT.'
-    """
 
     def __init__(self, dim, attn_drop, ffd_drop, bias_mat, n_heads, name=None, **kwargs):
         super(GAT, self).__init__(**kwargs)
@@ -568,10 +546,6 @@ class GAT(Layer):
 
 
 class GeniePathLayer(Layer):
-    """This layer equals to the Adaptive Path Layer in
-    paper 'GeniePath: Graph Neural Networks with Adaptive Receptive Paths.'
-    The code is adapted from shawnwang-tech/GeniePath-pytorch
-    """
 
     def __init__(self, placeholders, nodes, in_dim, dim, heads=1, name=None, **kwargs):
         super(GeniePathLayer, self).__init__(**kwargs)

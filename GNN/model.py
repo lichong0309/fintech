@@ -1,25 +1,9 @@
-'''
-This code is due to Yutong Deng (@yutongD), Yingtong Dou (@YingtongDou) and UIC BDSC Lab
-DGFraud (A Deep Graph-based Toolbox for Fraud Detection)
-https://github.com/safe-graph/DGFraud
 
-SemiGNN ('A Semi-supervised Graph Attentive Network for
-        Financial Fraud Detection')
-
-Parameters:
-    nodes: total nodes number
-    semi_encoding1: the first view attention layer unit number
-    semi_encoding2: the second view attention layer unit number
-    semi_encoding3: MLP layer unit number
-    init_emb_size: the initial node embedding
-    meta: view number
-    ul: labeled users number
-'''
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), '../..')))
 import tensorflow as tf
-from algorithms.base_algorithm import Algorithm
+from base_algorithm import Algorithm
 from base_models.layers import AttentionLayer
 from utils import utils
 
@@ -77,6 +61,7 @@ class SemiGNN(Algorithm):
         self.init = tf.global_variables_initializer()
         print('Backward propagation finished.')
 
+
     def forward_propagation(self):
         with tf.variable_scope('node_level_attention', reuse=tf.AUTO_REUSE):
             h1 = []
@@ -121,6 +106,7 @@ class SemiGNN(Algorithm):
             loss = self.alpha * loss1 + (1 - self.alpha) * loss2
         return loss, prob, pred
 
+
     def train(self, a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate=1e-2, momentum=0.9):
         feed_dict = utils.construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,
                                                    learning_rate, momentum,
@@ -133,6 +119,7 @@ class SemiGNN(Algorithm):
         pred = outs[3]
         prob = outs[4]
         return loss, acc, pred, prob
+
 
     def test(self, a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate=1e-2, momentum=0.9):
         feed_dict = utils.construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,

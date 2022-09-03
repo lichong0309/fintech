@@ -1,8 +1,6 @@
 import tensorflow as tf
 import numpy as np
 
-'''Adapted from tkipf/gcn'''
-
 
 def uniform(shape, scale=0.05, name=None):
     """Uniform init."""

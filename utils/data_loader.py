@@ -20,7 +20,7 @@ def unzip_file(zip_src, dst_dir):
         print('Zip Error.')
 
 
-def load_data_dblp(path='../../dataset/DBLP4057_GAT_with_idx_tra200_val_800.mat'):
+def load_data_dblp(path='../dataset/DBLP4057_GAT_with_idx_tra200_val_800.mat'):
     data = sio.loadmat(path)
     truelabels, features = data['label'], data['features'].astype(float)
     N = features.shape[0]

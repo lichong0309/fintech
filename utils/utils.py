@@ -4,7 +4,7 @@ import scipy.sparse as sp
 import numpy as np
 
 
-# symmetrically normalize adjacency matrix
+
 def normalize_adj(adj):
     adj = adj + sp.eye(adj.shape[0])
     adj = sp.coo_matrix(adj)
@@ -15,7 +15,6 @@ def normalize_adj(adj):
     return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).A
 
 
-# Construct feed dictionary
 def construct_feed_dict(x, a, t, b, learning_rate, momentum, placeholders):
     feed_dict = dict()
     feed_dict.update({placeholders['x']: x})
@@ -28,7 +27,6 @@ def construct_feed_dict(x, a, t, b, learning_rate, momentum, placeholders):
     return feed_dict
 
 
-# Construct feed dictionary for SemiGNN
 def construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate, momentum,
                            placeholders):
     feed_dict = dict()
@@ -43,7 +41,6 @@ def construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_s
     return feed_dict
 
 
-# Construct feed dictionary for SemiGNN
 def construct_feed_dict_spam(h, adj_info, t, b,  learning_rate, momentum, placeholders):
     feed_dict = dict()
     feed_dict.update({placeholders['user_review_adj']: adj_info[0]})
@@ -108,7 +105,6 @@ def pairs_to_matrix(pairs, nodes):
     return M
 
 
-# Random walk on graph
 def generate_random_walk(adjlist, start, walklength):
     t = 1
     walk_path = np.array([start])
@@ -121,7 +117,7 @@ def generate_random_walk(adjlist, start, walklength):
     return walk_path
 
 
-#  sample multiple times for each node
+
 def random_walks(adjlist, numerate, walklength):
     nodes = range(0, len(adjlist))  # node index starts from zero
     walks = []
@@ -176,7 +172,6 @@ def get_negative_sampling(pairs, adj_nodelist, Q=3, node_sampling='atlas'):
     return u_i, u_j, graph_label
 
 
-# Reference: https://en.wikipedia.org/wiki/Alias_method
 class AliasSampling:
 
     def __init__(self, prob):

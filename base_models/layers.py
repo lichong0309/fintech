@@ -215,7 +215,7 @@ class AttentionLayer(Layer):
         else:
             return output, weights
 
-    # view-level attention (equation (4) in SemiGNN)
+    # view-level attention (equation (4) in FinGNN)
     def view_attention(inputs, encoding1, encoding2, layer_size, meta, return_weights=False):
         h = inputs
         encoding = [encoding1, encoding2]

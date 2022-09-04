@@ -27,7 +27,7 @@ def construct_feed_dict(x, a, t, b, learning_rate, momentum, placeholders):
     return feed_dict
 
 
-def construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate, momentum,
+def construct_feed_dict_fin(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate, momentum,
                            placeholders):
     feed_dict = dict()
     feed_dict.update({placeholders['a']: a})

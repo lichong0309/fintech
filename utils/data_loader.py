@@ -34,8 +34,8 @@ def load_data_dblp(path='../dataset/DBLP4057_GAT_with_idx_tra200_val_800.mat'):
     return rownetworks, features, X_train, y_train, X_test, y_test
 
 
-def load_example_semi():
-    # example data for SemiGNN
+def load_example_fin():
+    # example data for FinGNN
     features = np.array([[1, 1, 0, 0, 0, 0, 0],
                          [0, 0, 1, 0, 0, 0, 0],
                          [0, 0, 0, 1, 0, 0, 0],

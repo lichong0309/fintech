@@ -8,15 +8,15 @@ from base_models.layers import AttentionLayer
 from utils import utils
 
 
-class SemiGNN(Algorithm):
+class FinGNN(Algorithm):
 
     def __init__(self,
                  session,
                  nodes,
                  class_size,
-                 semi_encoding1,
-                 semi_encoding2,
-                 semi_encoding3,
+                 fin_encoding1,
+                 fin_encoding2,
+                 fin_encoding3,
                  init_emb_size,
                  meta,
                  ul,
@@ -25,9 +25,9 @@ class SemiGNN(Algorithm):
         self.nodes = nodes
         self.meta = meta
         self.class_size = class_size
-        self.semi_encoding1 = semi_encoding1
-        self.semi_encoding2 = semi_encoding2
-        self.semi_encoding3 = semi_encoding3
+        self.fin_encoding1 = fin_encoding1
+        self.fin_encoding2 = fin_encoding2
+        self.fin_encoding3 = fin_encoding3
         self.init_emb_size = init_emb_size
         self.ul = ul
         self.alpha = alpha
@@ -77,18 +77,18 @@ class SemiGNN(Algorithm):
 
         with tf.variable_scope('view_level_attention'):
             h2 = AttentionLayer.view_attention(inputs=h1, layer_size=2,
-                                               meta=self.meta, encoding1=self.semi_encoding1,
-                                               encoding2=self.semi_encoding2)
-            h2 = tf.reshape(h2, [self.nodes, self.semi_encoding2 * self.meta])
+                                               meta=self.meta, encoding1=self.fin_encoding1,
+                                               encoding2=self.fin_encoding2)
+            h2 = tf.reshape(h2, [self.nodes, self.fin_encoding2 * self.meta])
             print('View_level attention over!')
 
         with tf.variable_scope('MLP'):
-            a_u = tf.layers.dense(inputs=h2, units=self.semi_encoding3, activation=None)
+            a_u = tf.layers.dense(inputs=h2, units=self.fin_encoding3, activation=None)
 
         with tf.variable_scope('loss'):
             # for the labeled users, use softmax to get the classiﬁcation result.
             labeled_a_u = tf.matmul(tf.one_hot(self.placeholders['batch_index'], self.nodes), a_u)
-            theta = tf.get_variable(name='theta', shape=[self.semi_encoding3, self.class_size],
+            theta = tf.get_variable(name='theta', shape=[self.fin_encoding3, self.class_size],
                                     initializer=tf.contrib.layers.xavier_initializer())
 
             logits = tf.matmul(labeled_a_u, theta)
@@ -108,7 +108,7 @@ class SemiGNN(Algorithm):
 
 
     def train(self, a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate=1e-2, momentum=0.9):
-        feed_dict = utils.construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,
+        feed_dict = utils.construct_feed_dict_fin(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,
                                                    learning_rate, momentum,
                                                    self.placeholders)
         outs = self.sess.run(
@@ -122,7 +122,7 @@ class SemiGNN(Algorithm):
 
 
     def test(self, a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label, learning_rate=1e-2, momentum=0.9):
-        feed_dict = utils.construct_feed_dict_semi(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,
+        feed_dict = utils.construct_feed_dict_fin(a, u_i, u_j, batch_graph_label, batch_data, batch_sup_label,
                                                    learning_rate, momentum,
                                                    self.placeholders)
         acc, pred, probabilities, tags = self.sess.run(

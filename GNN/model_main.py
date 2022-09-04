@@ -19,11 +19,11 @@ def arg_parser():
     parser.add_argument('--momentum', type=int, default=0.9)
     parser.add_argument('--learning_rate', default=0.001, help='the ratio of training set in whole dataset.')
 
-    # SemiGNN
+    # FinGNN
     parser.add_argument('--init_emb_size', default=4, help='initial node embedding size')
-    parser.add_argument('--semi_encoding1', default=3, help='the first view attention layer unit number')
-    parser.add_argument('--semi_encoding2', default=2, help='the second view attention layer unit number')
-    parser.add_argument('--semi_encoding3', default=4, help='one-layer perceptron units')
+    parser.add_argument('--fin_encoding1', default=3, help='the first view attention layer unit number')
+    parser.add_argument('--fin_encoding2', default=2, help='the second view attention layer unit number')
+    parser.add_argument('--fin_encoding3', default=4, help='one-layer perceptron units')
     parser.add_argument('--Ul', default=8, help='labeled users number')
     parser.add_argument('--alpha', default=0.5, help='loss alpha')
     parser.add_argument('--lamtha', default=0.5, help='loss lamtha')
@@ -50,7 +50,7 @@ def get_data(ix, int_batch, train_size):
 
 def load_data(args):
     if args.dataset_str == 'example':
-        adj_list, features, train_data, train_label, test_data, test_label = load_example_semi()
+        adj_list, features, train_data, train_label, test_data, test_label = load_example_fin()
         node_size = features.shape[0]
         node_embedding = features.shape[1]
         class_size = train_label.shape[1]
@@ -65,8 +65,8 @@ def train(args, adj_list, features, train_data, train_label, test_data, test_lab
         adj_nodelists = [matrix_to_adjlist(adj, pad=False) for adj in adj_list]
         meta_size = len(adj_list)
         pairs = [random_walks(adj_nodelists[i], 2, 3) for i in range(meta_size)]
-        net = SemiGNN(session=sess, class_size=paras[2], semi_encoding1=args.semi_encoding1,
-                      semi_encoding2=args.semi_encoding2, semi_encoding3=args.semi_encoding3,
+        net = FinGNN(session=sess, class_size=paras[2], fin_encoding1=args.fin_encoding1,
+                      fin_encoding2=args.fin_encoding2, fin_encoding3=args.fin_encoding3,
                       meta=meta_size, nodes=paras[0], init_emb_size=args.init_emb_size, ul=args.batch_size,
                       alpha=args.alpha, lamtha=args.lamtha)
         adj_data = [pairs_to_matrix(p, paras[0]) for p in pairs]
